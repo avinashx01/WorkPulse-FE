@@ -16,11 +16,37 @@ import type { ApexOptions } from 'apexcharts'
 // Styled Component Imports
 const AppReactApexCharts = dynamic(() => import('@/libs/styles/AppReactApexCharts'))
 
-const series = [{ data: [40, 20, 65, 50] }]
+// State and Effect Imports
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
-const LineAreaDailySalesChart = () => {
+// Sample data in case profileData is not available
+const series = [{ data: [5, 3, 2, 1] }]
+
+const Profile = () => {
   // Hook
   const theme = useTheme()
+
+  // State for profile data
+  const [profileData, setProfileData] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem('token')
+        const response = await axios.get('http://localhost:4000/profile', {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        setProfileData(response.data)
+      } catch (error) {
+        console.error('Error fetching profile:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchProfile()
+  }, [])
 
   const options: ApexOptions = {
     chart: {
@@ -79,16 +105,42 @@ const LineAreaDailySalesChart = () => {
     yaxis: { show: false }
   }
 
+  if (loading) {
+    return (
+      <Card className='pbe-6'>
+        <CardContent>
+          <Typography>Loading profile data...</Typography>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  if (!profileData) {
+    return (
+      <Card className='pbe-6'>
+        <CardContent>
+          <Typography>Error loading profile data</Typography>
+        </CardContent>
+      </Card>
+    )
+  }
+
   return (
     <Card className='pbe-6'>
-      <CardHeader title='Average Daily Sales' className='pbe-3' />
+      <CardHeader title='Profile Overview' className='pbe-3' />
       <CardContent>
-        <Typography>Total Sales This Month</Typography>
-        <Typography variant='h4'>$28,450</Typography>
+        <Typography>Total Leave Types Available</Typography>
+        <Typography variant='h4'>{profileData?.leaveConfigs?.length || 0}</Typography>
       </CardContent>
-      <AppReactApexCharts type='area' height={88} width='100%' series={series} options={options} />
+      <AppReactApexCharts
+        type='area'
+        height={88}
+        width='100%'
+        series={[{ data: profileData?.leaveConfigs?.map((_: any) => Math.floor(Math.random() * 10)) || [5, 3, 2, 1] }]}
+        options={options}
+      />
     </Card>
   )
 }
 
-export default LineAreaDailySalesChart
+export default Profile

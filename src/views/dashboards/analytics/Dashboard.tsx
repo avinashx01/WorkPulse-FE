@@ -1,3 +1,5 @@
+'use client'
+
 // Next Imports
 import dynamic from 'next/dynamic'
 
@@ -23,46 +25,37 @@ import CustomAvatar from '@core/components/mui/Avatar'
 // Styled Component Imports
 const AppReactApexCharts = dynamic(() => import('@/libs/styles/AppReactApexCharts'))
 
-type DataType = {
-  stats: string
-  title: string
-  progress: number
-  avatarIcon: string
-  avatarColor?: ThemeColor
-  progressColor?: ThemeColor
-}
-
 // Vars
 const series = [{ data: [37, 76, 65, 41, 99, 53, 70] }]
 
-const data: DataType[] = [
+const data = [
   {
-    title: 'Earnings',
-    progress: 64,
-    stats: '$545.69',
-    progressColor: 'primary',
-    avatarColor: 'primary',
-    avatarIcon: 'tabler-currency-dollar'
+    title: 'Tasks Completed',
+    progress: 75,
+    stats: '24',
+    progressColor: 'success',
+    avatarColor: 'success',
+    avatarIcon: 'tabler-check'
   },
   {
-    title: 'Profit',
-    progress: 59,
-    stats: '$256.34',
-    progressColor: 'info',
-    avatarColor: 'info',
-    avatarIcon: 'tabler-chart-pie-2'
+    title: 'Pending Tasks',
+    progress: 45,
+    stats: '12',
+    progressColor: 'warning',
+    avatarColor: 'warning',
+    avatarIcon: 'tabler-clock'
   },
   {
-    title: 'Expense',
-    progress: 22,
-    stats: '$74.19',
+    title: 'Overdue Tasks',
+    progress: 20,
+    stats: '3',
     progressColor: 'error',
     avatarColor: 'error',
-    avatarIcon: 'tabler-brand-paypal'
+    avatarIcon: 'tabler-alert-triangle'
   }
 ]
 
-const EarningReports = () => {
+const Dashboard = () => {
   // Vars
   const primaryColorWithOpacity = 'var(--mui-palette-primary-lightOpacity)'
 
@@ -124,8 +117,8 @@ const EarningReports = () => {
   return (
     <Card>
       <CardHeader
-        title='Earning Reports'
-        subheader='Weekly Earnings Overview'
+        title='Dashboard'
+        subheader='Weekly Productivity Overview'
         action={<OptionMenu options={['Last Week', 'Last Month', 'Last Year']} />}
         className='pbe-0'
       />
@@ -133,11 +126,11 @@ const EarningReports = () => {
         <div className='flex flex-col sm:flex-row items-center justify-between gap-8'>
           <div className='flex flex-col gap-3 is-full sm:is-[unset]'>
             <div className='flex items-center gap-2.5'>
-              <Typography variant='h2'>$468</Typography>
-              <Chip size='small' variant='tonal' color='success' label='+4.2%' />
+              <Typography variant='h2'>24</Typography>
+              <Chip size='small' variant='tonal' color='success' label='+8.5%' />
             </div>
             <Typography variant='body2' className='text-balance'>
-              You informed of this week compared to last week
+              Tasks completed this week compared to last week
             </Typography>
           </div>
           <AppReactApexCharts type='bar' height={163} width='100%' series={series} options={options} />
@@ -168,4 +161,4 @@ const EarningReports = () => {
   )
 }
 
-export default EarningReports
+export default Dashboard

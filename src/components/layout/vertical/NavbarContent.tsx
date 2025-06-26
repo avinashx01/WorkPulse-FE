@@ -30,9 +30,7 @@ import { useAppDetails } from '@/hooks/useAppDetails' // Import the custom hook
 
 const NavbarContent = () => {
 
-  const appDetails:any = useAppDetails()
-
-  const userRoleType = appDetails   ? appDetails.appDetails[0]?.roleDetails[0]?.roleKey  : null;
+  
 
   return (
     <div className={classnames(verticalLayoutClasses.navbarContent, 'flex items-center justify-between gap-4 is-full')}>
@@ -46,11 +44,8 @@ const NavbarContent = () => {
        <ShortcutsDropdown shortcuts={shortcuts} />
 
         <NotificationsDropdown notifications={notifications} /> */}
+       
 
-{userRoleType != 'UB_CUSTOMER' && (
-        <ShortcutsDropdown />
-
-)}
         <ModeDropdown />
         <Customizer />
         <UserDropdown />
